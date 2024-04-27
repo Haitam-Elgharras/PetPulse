@@ -1,9 +1,11 @@
 package ma.petpulse.petpulsecore.dao.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ma.petpulse.petpulsecore.enumerations.Specie;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "pets")
 @Data @AllArgsConstructor @NoArgsConstructor
+
 public class Pet {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -22,6 +25,10 @@ public class Pet {
     @Size(max = 100, message = "Name cannot exceed 100 characters")
     private String name;
 
+    //The species to which the pet belongs (e.g., dog, cat, bird, etc.).
+    @Enumerated(EnumType.STRING)
+    private Specie specie;
+
     @NotBlank(message = "Breed is required")
     @Size(max = 100, message = "Breed cannot exceed 100 characters")
     private String breed;
@@ -29,11 +36,14 @@ public class Pet {
     @Min(value = 0, message = "Age must be greater than or equal to 0")
     private int age;
 
+    @NotBlank(message = "Image is required")
+    private String imageURL;
+
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User owner;
-
 }
