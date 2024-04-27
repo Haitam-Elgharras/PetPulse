@@ -1,5 +1,6 @@
 package ma.petpulse.petpulsecore.service.services.interfaces;
 
+import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,4 +19,6 @@ public interface IUserService extends UserDetailsService {
     List<User> getAllUsers();
 
     User getUserByEmail(String email);
+
+    List<Pet> getAllPets(User user);
 }

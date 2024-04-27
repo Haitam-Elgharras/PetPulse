@@ -32,4 +32,8 @@ public class Pet {
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "id", nullable = false)
+    private User owner;
+
 }
