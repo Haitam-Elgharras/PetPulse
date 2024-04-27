@@ -1,4 +1,4 @@
-package ma.petpulse.petpulsecore.entities;
+package ma.petpulse.petpulsecore.dao.entities;
 
 import jakarta.persistence.*;
 
