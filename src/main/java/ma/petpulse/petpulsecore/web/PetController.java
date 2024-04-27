@@ -63,4 +63,41 @@ public class PetController {
 
         return new ResponseEntity<>(savedPet, HttpStatus.CREATED);
     }
+
+    @PutMapping("/pets/update/{id}")
+    public ResponseEntity<Pet> updatePet(@PathVariable Long id, @Valid @RequestBody PetDto petDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            // If there are validation errors, return a bad request response
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        User owner = userService.getUserById(petDto.getOwnerId());
+        if (owner == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Get the pet entity by its id
+        Pet pet = petService.getPetById(id);
+        if (pet == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Update the pet entity with the new attributes
+        pet.setName(petDto.getName());
+        pet.setSpecie(Specie.valueOf(petDto.getSpecie()));
+        pet.setBreed(petDto.getBreed());
+        pet.setAge(petDto.getAge());
+        pet.setImageURL(petDto.getImageURL());
+        pet.setOwner(owner);
+
+        // Save the updated pet entity
+        Pet updatedPet = petService.updatePet(pet);
+
+        return new ResponseEntity<>(updatedPet, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/pets/delete/{id}")
+    public void deletePet(@PathVariable Long id) {
+        petService.deletePet(id);
+    }
 }
