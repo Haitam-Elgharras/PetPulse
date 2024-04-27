@@ -62,4 +62,3 @@ public class UserServiceImpl implements IUserService {
 
     // other methods related to user service
 }
-
