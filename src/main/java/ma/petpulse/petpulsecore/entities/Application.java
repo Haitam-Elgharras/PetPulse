@@ -1,11 +1,9 @@
 package ma.petpulse.petpulsecore.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "applications")
 public class Application {
     @Id
     private Long id;

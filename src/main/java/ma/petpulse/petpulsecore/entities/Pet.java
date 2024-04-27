@@ -1,14 +1,12 @@
 package ma.petpulse.petpulsecore.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "pets")
 public class Pet {
     @Id
     private Long id;
