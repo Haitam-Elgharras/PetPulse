@@ -15,13 +15,13 @@ public class PetServiceImpl implements IPetService {
     public PetServiceImpl(PetRepository petRepository) {this.petRepository = petRepository;}
 
     @Override
-    public void addPet(Pet pet) {
-        petRepository.save(pet);
+    public Pet addPet(Pet pet) {
+        return petRepository.save(pet);
     }
 
     @Override
-    public void updatePet(Pet pet) {
-        petRepository.save(pet);
+    public Pet updatePet(Pet pet) {
+        return petRepository.save(pet);
     }
 
     @Override

@@ -6,8 +6,8 @@ import ma.petpulse.petpulsecore.dao.entities.User;
 import java.util.List;
 
 public interface IPetService {
-    void addPet(Pet pet);
-    void updatePet(Pet pet);
+    Pet addPet(Pet pet);
+    Pet updatePet(Pet pet);
     void deletePet(Pet pet);
     List<Pet> getAllPets();
     Pet getPetById(Long id);

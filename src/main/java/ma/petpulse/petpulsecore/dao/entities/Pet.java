@@ -9,6 +9,7 @@ import ma.petpulse.petpulsecore.enumerations.Specie;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Pet {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotBlank(message = "Name is required")
+    @NotEmpty
     @Size(max = 100, message = "Name cannot exceed 100 characters")
     private String name;
 
@@ -29,14 +30,14 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private Specie specie;
 
-    @NotBlank(message = "Breed is required")
+    @NotEmpty
     @Size(max = 100, message = "Breed cannot exceed 100 characters")
     private String breed;
 
     @Min(value = 0, message = "Age must be greater than or equal to 0")
     private int age;
 
-    @NotBlank(message = "Image is required")
+    @NotEmpty
     private String imageURL;
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
