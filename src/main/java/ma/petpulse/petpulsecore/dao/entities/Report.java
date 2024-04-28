@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ma.petpulse.petpulsecore.enumerations.Status;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "reports")
-public abstract class Report {
+public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,9 +60,7 @@ public abstract class Report {
     protected void onCreate() {
         createdAt = new Date();
     }
-    public enum Status {
-        OPEN, CLOSED, PENDING, INACTIVE, ARCHIVED
-    }
+
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
