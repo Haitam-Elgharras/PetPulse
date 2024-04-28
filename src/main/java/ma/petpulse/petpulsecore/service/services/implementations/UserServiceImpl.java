@@ -1,5 +1,6 @@
 package ma.petpulse.petpulsecore.service.services.implementations;
 
+import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.dao.repositories.UserRepository;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
@@ -48,6 +49,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public List<Pet> getAllPets(User user) {
+        return user.getPets();
+    }
+
+    @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
         System.out.println("reach for user with email: " + email);
         return userRepository.findByEmail(email)
@@ -56,4 +62,3 @@ public class UserServiceImpl implements IUserService {
 
     // other methods related to user service
 }
-
