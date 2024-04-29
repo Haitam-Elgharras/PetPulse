@@ -112,6 +112,16 @@
             <version>2.5.0</version>
         </dependency>
 
+
+<!--        O2 -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-oauth2-resource-server -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+            <version>6.2.4</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

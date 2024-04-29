@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,6 +34,14 @@ public class SecurityConfig {
                                 authorizeRequests
                                         .requestMatchers("/auth/**")
                                         .permitAll()
+                                        /**
+                                         * This is deliberate behavior because some users had private information on their error pages
+                                         * and thus they needed them secured by default. To help with this, Spring Security 6 secures all
+                                         * dispatcher types (including ERROR dispatch) not just REQUEST dispatches. If you want to allow ERROR
+                                         * dispatches, you can update your authorization rules by dispatcher type.
+                                         * we can add the following line to make the error dispatch unsecured
+                                         */
+                                        .requestMatchers(new AntPathRequestMatcher("/error")).permitAll()
                                         .anyRequest()
                                         .authenticated()
                                         .and()
