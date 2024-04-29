@@ -1,11 +1,16 @@
 package ma.petpulse.petpulsecore.web;
 
+import lombok.RequiredArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.enumerations.Specie;
 import ma.petpulse.petpulsecore.service.dtos.PetDto;
+import ma.petpulse.petpulsecore.service.dtos.UserDto;
+import ma.petpulse.petpulsecore.service.mappers.UserMapper;
 import ma.petpulse.petpulsecore.service.services.implementations.PetServiceImpl;
 import ma.petpulse.petpulsecore.service.services.implementations.UserServiceImpl;
+import ma.petpulse.petpulsecore.service.services.interfaces.IPetService;
+import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -15,14 +20,12 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 
 @RestController
+@RequiredArgsConstructor
 public class PetController {
-    private final PetServiceImpl petService;
-    private final UserServiceImpl userService;
+    private final IPetService petService;
+    private final IUserService userService;
+    private final UserMapper userMapper;
 
-    public PetController(PetServiceImpl petService, UserServiceImpl userService) {
-        this.petService = petService;
-        this.userService = userService;
-    }
 
     @GetMapping("/pets")
     public ArrayList<Pet> getPets() {

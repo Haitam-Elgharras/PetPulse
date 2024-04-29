@@ -1,8 +1,11 @@
 package ma.petpulse.petpulsecore.service.services.implementations;
 
+import lombok.RequiredArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.dao.repositories.UserRepository;
+import ma.petpulse.petpulsecore.service.mappers.UserMapper;
+import ma.petpulse.petpulsecore.service.dtos.UserDto;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -10,16 +13,20 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserMapper userMapper;
 
     @Override
-    public User addUser(User User) {
-        return userRepository.save(User);
+    public UserDto addUser(User User) {
+        // check if a user with the same email already exists
+        if (userRepository.findByEmail(User.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("An error occurred during registration");
+        }
+
+        // save the user and map it to a userDto
+        return userMapper.userToUserDto(userRepository.save(User));
     }
 
     @Override
@@ -38,14 +45,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userMapper.usersToUserDtos(userRepository.findAll());
     }
 
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+    public UserDto getUserByEmail(String email) {
+        return userMapper.userToUserDto(userRepository.findByEmail(email).orElse(null));
     }
 
     @Override

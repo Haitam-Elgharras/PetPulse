@@ -74,12 +74,12 @@ public class JwtService implements IJwtService {
     }
 
     @Override
-    public String generateAccessToken(User userAccount) {
+    public String generateAccessToken(User user) {
         return generateToken(
-                Map.of("role", userAccount.getRole(),
-                        "id", userAccount.getId(),
-                        "email", userAccount.getEmail()),
-                userAccount.getEmail(),
+                Map.of("role", user.getRole(),
+                        "id", user.getId(),
+                        "email", user.getEmail()),
+                user.getEmail(),
                 jwtConfig.getSignInKey(),
                 jwtConfig.getAccessTokenExpiredAfter()
         );

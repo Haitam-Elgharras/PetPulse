@@ -12,12 +12,14 @@ import ma.petpulse.petpulsecore.service.dtos.RegisterRequest;
 import ma.petpulse.petpulsecore.service.services.interfaces.IAuthenticationService;
 import ma.petpulse.petpulsecore.service.services.interfaces.IJwtService;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @Slf4j
@@ -36,11 +38,11 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
                         request.getPassword()
                 )
         );
-        User userAccount = userService.loadUserByUsername(request.getEmail());
-        if (userAccount == null)
+        User user = userService.loadUserByUsername(request.getEmail());
+        if (user == null)
             throw new BadCredentialsException("Unauthorized");
 
-        String jwtToken = jwtService.generateAccessToken(userAccount);
+        String jwtToken = jwtService.generateAccessToken(user);
         return new AuthenticationResponse(jwtToken);
     }
 
@@ -52,7 +54,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.ROLE_PET_OWNER);
+
         userService.addUser(user);
+
         String jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken);
     }
@@ -61,17 +65,17 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
     public AuthenticationResponse updateCredentials(DTOUserCredentials userCredentials) {
         User authUser = jwtService.getAuthenticatedUser();
         if (authUser != null) {
-            User userAccount = userService.loadUserByUsername(jwtService.getAuthenticatedUser().getUsername());
+            User user = userService.loadUserByUsername(jwtService.getAuthenticatedUser().getUsername());
 
-            boolean passwordsMatchers = (new BCryptPasswordEncoder()).matches(userCredentials.getOldPassword(), userAccount.getPassword());
+            boolean passwordsMatchers = (new BCryptPasswordEncoder()).matches(userCredentials.getOldPassword(), user.getPassword());
             if (!passwordsMatchers)
                 throw new BadCredentialsException("Unauthorized");
-            //
-            userAccount.setEmail(userCredentials.getEmail());
-            userAccount.setPassword(userCredentials.getPassword());
-            //
+
+            user.setEmail(userCredentials.getEmail());
+            user.setPassword(userCredentials.getPassword());
+
             String accessToken = jwtService.generateAccessToken(
-                    userService.updateUser(userAccount)
+                    userService.updateUser(user)
             );
             return new AuthenticationResponse(accessToken);
         }

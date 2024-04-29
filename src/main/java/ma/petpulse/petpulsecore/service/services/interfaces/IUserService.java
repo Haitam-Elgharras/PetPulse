@@ -2,6 +2,7 @@ package ma.petpulse.petpulsecore.service.services.interfaces;
 
 import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
+import ma.petpulse.petpulsecore.service.dtos.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -11,14 +12,14 @@ public interface IUserService extends UserDetailsService {
 
     User loadUserByUsername(String username) throws UsernameNotFoundException;
 
-    User addUser(User User);
+    UserDto addUser(User User);
     void deleteUserById(long id);
     User updateUser(User User);
 
     User getUserById(long id);
-    List<User> getAllUsers();
+    List<UserDto> getAllUsers();
 
-    User getUserByEmail(String email);
+    UserDto getUserByEmail(String email);
 
     List<Pet> getAllPets(User user);
 }

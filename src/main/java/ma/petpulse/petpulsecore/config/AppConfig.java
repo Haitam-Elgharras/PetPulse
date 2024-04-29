@@ -1,5 +1,7 @@
 package ma.petpulse.petpulsecore.config;
 
+import lombok.RequiredArgsConstructor;
+import ma.petpulse.petpulsecore.service.mappers.UserMapper;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -16,17 +18,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
+@RequiredArgsConstructor
 public class AppConfig {
     private final IUserService userService;
+    private final UserMapper userMapper;
 
-    public AppConfig(IUserService userService) {
-        this.userService = userService;
-    }
 
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username->userService.getUserByEmail(username);
+        return username->userMapper.userDtoToUser(userService.getUserByEmail(username));
     }
 
     @Bean
