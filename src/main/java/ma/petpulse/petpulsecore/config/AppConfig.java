@@ -21,13 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class AppConfig {
     private final IUserService userService;
-    private final UserMapper userMapper;
 
 
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username->userMapper.userDtoToUser(userService.getUserByEmail(username));
+        return username->userService.loadUserByUsername(username);
     }
 
     @Bean
