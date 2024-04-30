@@ -44,6 +44,5 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User owner;
 }

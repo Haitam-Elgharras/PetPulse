@@ -10,6 +10,7 @@ import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
 import ma.petpulse.petpulsecore.exceptions.ReportNotFoundException;
 import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
 import ma.petpulse.petpulsecore.service.dtos.ReportDto;
+import ma.petpulse.petpulsecore.service.mappers.PetMapper;
 import ma.petpulse.petpulsecore.service.mappers.ReportMapper;
 import ma.petpulse.petpulsecore.service.services.interfaces.IReportService;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,11 @@ public class ReportServiceImpl implements IReportService {
     public UserServiceImpl userService;
     public PetServiceImpl petService;
     public ReportMapper reportMapper;
+    private PetMapper petMapper;
     @Override
     public ReportDto saveReport(ReportDto reportDto) throws UserNotFoundException,PetNotFoundException{
         log.info("saving new report");
-        Pet pet=petService.getPetById(reportDto.getPet_id());
+        Pet pet= petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
         User user = userService.getUserById(reportDto.getUser_id());
         if (user==null)
             throw new UserNotFoundException("User with id " + reportDto.getUser_id() + " not found");
@@ -43,7 +45,7 @@ public class ReportServiceImpl implements IReportService {
 
     @Override
     public ReportDto updateReport(ReportDto reportDto) {
-        Pet pet=petService.getPetById(reportDto.getPet_id());
+        Pet pet=petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
         User user = userService.getUserById(reportDto.getUser_id());
         if (user==null)
             throw new UserNotFoundException("User with id " + reportDto.getUser_id() + " not found");
