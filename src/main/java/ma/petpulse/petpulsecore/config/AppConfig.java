@@ -8,6 +8,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -46,7 +47,6 @@ public class AppConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {

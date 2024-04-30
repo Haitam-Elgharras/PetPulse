@@ -95,6 +95,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleMethodArgumentNotValid(((ServletWebRequest) request).getRequest(), ex);
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Object> handleIllegalStateException(HttpServletRequest req, IllegalStateException ex){
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST);
+        response.setMessage("Illegal state: " + ex.getMessage() + " " + req.getRequestURI());
+        return buildResponseEntity(response);
+    }
 
     private ResponseEntity<Object> buildResponseEntity(ErrorResponse errorResponse){
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
+import ma.petpulse.petpulsecore.service.dtos.ChangePasswordRequest;
 import ma.petpulse.petpulsecore.service.dtos.UserDto;
 import ma.petpulse.petpulsecore.service.services.interfaces.IJwtService;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
@@ -70,12 +71,20 @@ public class UserController {
         if(!isAuthenticated(authUser, id))
             throw new AccessDeniedException("Authenticated user does not have access to modify this user");
 
-        // hash the password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setId(id);
 
         return ResponseEntity.ok(userService.updateUser(user));
     }
+
+    // change the password of the authenticated user
+    @PutMapping("/change-password")
+    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
+        User authUser = jwtService.getAuthenticatedUser();
+        userService.changePassword(request, authUser);
+
+        return ResponseEntity.ok("Password changed successfully");
+    }
+
     private boolean isAuthenticated(User authUser, Long id) {
         return authUser.getId().equals(id);
     }
