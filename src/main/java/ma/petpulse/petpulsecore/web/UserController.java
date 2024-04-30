@@ -34,15 +34,15 @@ public class UserController {
     public User getUserById(@PathVariable Long id) {
         // check if user exists
         User user = userService.getUserById(id);
-        if (user == null) {
+        if (user == null)
             throw new UserNotFoundException("User with id " + id + " not found");
-        }
+
         return user;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public UserDto addUser(@RequestBody User user) {
+    public UserDto addUser(@Valid @RequestBody User user) {
         if(user.getRole() != null)
             user.setRole(null);
 

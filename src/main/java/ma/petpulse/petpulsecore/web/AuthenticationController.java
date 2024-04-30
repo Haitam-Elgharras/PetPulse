@@ -8,6 +8,7 @@ import ma.petpulse.petpulsecore.service.dtos.RegisterRequest;
 import ma.petpulse.petpulsecore.service.services.interfaces.IAuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,7 +20,12 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authService.authenticate(request));
+        try{
+            return ResponseEntity.ok(authService.authenticate(request));
+        }
+        catch (Exception e) {
+            throw new BadCredentialsException("incorrect email or password");
+        }
     }
 
     @PostMapping("/register")
@@ -28,7 +34,7 @@ public class AuthenticationController {
         // Handle the case where a user with the same email already exists
         try {
             return ResponseEntity.ok(authService.register(request));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             String message = e.getMessage() != null ? e.getMessage() : "An error occurred during registration";
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
