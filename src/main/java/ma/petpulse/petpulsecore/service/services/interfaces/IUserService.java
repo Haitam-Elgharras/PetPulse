@@ -2,6 +2,7 @@ package ma.petpulse.petpulsecore.service.services.interfaces;
 
 import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
+import ma.petpulse.petpulsecore.service.dtos.ChangePasswordRequest;
 import ma.petpulse.petpulsecore.service.dtos.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,4 +23,8 @@ public interface IUserService extends UserDetailsService {
     UserDto getUserByEmail(String email);
 
     List<Pet> getAllPets(User user);
+
+    void changePassword(ChangePasswordRequest request, User authUser);
+
+
 }

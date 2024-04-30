@@ -6,8 +6,12 @@ import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.dao.repositories.UserRepository;
 import ma.petpulse.petpulsecore.service.mappers.UserMapper;
 import ma.petpulse.petpulsecore.service.dtos.UserDto;
+import ma.petpulse.petpulsecore.service.dtos.ChangePasswordRequest;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,9 @@ import java.util.List;
 public class UserServiceImpl implements IUserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    @Lazy
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDto addUser(User User) {
@@ -67,5 +74,21 @@ public class UserServiceImpl implements IUserService {
                 .orElse(null);
     }
 
-    // other methods related to user service
+    @Override
+    public void changePassword(ChangePasswordRequest request, User authUser) {
+
+        // check if the current password is correct
+        if (!passwordEncoder.matches(request.getCurrentPassword(), authUser.getPassword()))
+            throw new IllegalStateException("The current password is incorrect");
+
+        // check if the two new passwords are the same
+        if (!request.getNewPassword().equals(request.getConfirmationPassword()))
+            throw new IllegalStateException("The new passwords do not match");
+
+        // update the password
+        authUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        // save the new password
+        userRepository.save(authUser);
+    }
 }

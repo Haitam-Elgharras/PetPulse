@@ -39,8 +39,6 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
                 )
         );
         User user = userService.loadUserByUsername(request.getEmail());
-        if (user == null)
-            throw new BadCredentialsException("Unauthorized");
 
         String jwtToken = jwtService.generateAccessToken(user);
         return new AuthenticationResponse(jwtToken);
