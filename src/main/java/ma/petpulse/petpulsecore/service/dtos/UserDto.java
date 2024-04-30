@@ -7,7 +7,8 @@ import ma.petpulse.petpulsecore.enumerations.Role;
 import java.util.List;
 
 @Data
-public class UserDto {
+public class  UserDto {
+
     private Long id;
     private String firstName;
     private String lastName;

@@ -67,7 +67,6 @@
             <version>2.5.0</version>
         </dependency>
 
-        <!-- spring security core and config -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
