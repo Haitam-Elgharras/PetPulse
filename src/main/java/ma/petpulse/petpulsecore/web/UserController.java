@@ -5,67 +5,78 @@ import lombok.RequiredArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
 import ma.petpulse.petpulsecore.service.dtos.UserDto;
+import ma.petpulse.petpulsecore.service.services.interfaces.IJwtService;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@Transactional
-@EnableMethodSecurity
-@EnableWebSecurity
 @RequiredArgsConstructor
 public class UserController {
     private final IUserService userService;
+    private final IJwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping()
     @PreAuthorize("hasRole('PET_OWNER')")
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('PET_OWNER')")
-    public User getUserById(@PathVariable Long id) {
-        // check if user exists
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         if (user == null)
             throw new UserNotFoundException("User with id " + id + " not found");
 
-        return user;
+        return ResponseEntity.ok(user);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public UserDto addUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody User user) {
         if(user.getRole() != null)
             user.setRole(null);
 
-        return userService.addUser(user);
+        return ResponseEntity.ok(userService.addUser(user));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        // check if user exists
-        User user = userService.getUserById(id);
-        if (user == null) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        User authUser = jwtService.getAuthenticatedUser();
+        if (authUser == null || !isAuthenticated(authUser, id)) {
             throw new UserNotFoundException("User with id " + id + " not found");
         }
+
         userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('PET_OWNER')")
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
+        User authUser = jwtService.getAuthenticatedUser();
 
-    // exception handling
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-//        String errorMessage = ex.getBindingResult().getAllErrors().stream()
-//                .map(ObjectError::getDefaultMessage)
-//                .collect(Collectors.joining(", "));
-//        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-//    }
+        if (authUser == null)
+            throw new UserNotFoundException("User with id " + id + " not found");
+
+        if(!isAuthenticated(authUser, id))
+            throw new AccessDeniedException("Authenticated user does not have access to modify this user");
+
+        // hash the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setId(id);
+
+        return ResponseEntity.ok(userService.updateUser(user));
+    }
+    private boolean isAuthenticated(User authUser, Long id) {
+        return authUser.getId().equals(id);
+    }
 }
