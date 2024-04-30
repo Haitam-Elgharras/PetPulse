@@ -7,10 +7,11 @@ import java.util.List;
 
 public interface IReportService {
     ReportDto saveReport(ReportDto reportDto);
-    ReportDto updateReport(Long reportId,Report reportDto);
+
+    ReportDto updateReport(ReportDto report);
+
     void deleteReport(Long reportId);
     ReportDto getReportById(Long reportId);
     List<ReportDto> getAllReports();
-    List<ReportDto> getReportsByType(String type);
     List<ReportDto> getReportsByUserId(Long userId);
 }

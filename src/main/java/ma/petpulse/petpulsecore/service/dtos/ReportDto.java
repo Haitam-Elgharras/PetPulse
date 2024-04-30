@@ -1,19 +1,9 @@
 package ma.petpulse.petpulsecore.service.dtos;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import ma.petpulse.petpulsecore.dao.entities.Pet;
-import ma.petpulse.petpulsecore.dao.entities.PetOwner;
 import ma.petpulse.petpulsecore.enumerations.Status;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class ReportDto {
@@ -30,6 +20,6 @@ public class ReportDto {
     private Date createdAt;
     private Date updatedAt;
     private boolean verified;
-    private Pet pet;
-    private PetOwner petOwner;
+    private Long pet_id;
+    private Long  user_id;
 }

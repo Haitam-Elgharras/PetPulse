@@ -35,6 +35,13 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Pet> pets = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Report> reports = new ArrayList<>();
+
+
+
+
     @Override
     public String toString() {
         return "User{" +

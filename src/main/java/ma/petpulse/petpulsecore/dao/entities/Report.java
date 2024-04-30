@@ -69,6 +69,6 @@ public class Report {
     private Pet pet;
 
     @ManyToOne
-    @JoinColumn(name = "pet_owner_id")
-    private PetOwner petOwner;
+    @JoinColumn(name = "user_id")
+    private User user;
 }
