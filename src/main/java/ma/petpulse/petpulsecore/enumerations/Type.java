@@ -1,2 +1,5 @@
-package ma.petpulse.petpulsecore.enumerations;public class Type {
+package ma.petpulse.petpulsecore.enumerations;
+
+public enum Type {
+    LOST, FOUND, ADOPTION
 }

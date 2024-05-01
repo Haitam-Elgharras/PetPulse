@@ -24,7 +24,6 @@ public class AppConfig {
     private final IUserService userService;
 
 
-
     @Bean
     public UserDetailsService userDetailsService() {
         return username->userService.loadUserByUsername(username);
