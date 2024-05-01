@@ -18,7 +18,7 @@ import java.util.List;
 @Data @AllArgsConstructor @NoArgsConstructor
 
 public class Pet {
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
@@ -40,6 +40,7 @@ public class Pet {
     private String imageURL;
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Report> reports = new ArrayList<>();
 
     @ManyToOne

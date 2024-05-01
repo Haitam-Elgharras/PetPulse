@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/applications")
+@RequestMapping("/applications/adopt")
 @RequiredArgsConstructor
 public class AdoptionApplicationController {
     private final IAdoptionApplicationService adoptionApplicationService;
@@ -33,7 +33,12 @@ public class AdoptionApplicationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AdoptionApplication> getApplicationById(@PathVariable Long id) {
-        return ResponseEntity.ok(adoptionApplicationService.getApplicationById(id));
+        // Get the application by id
+        AdoptionApplication application = adoptionApplicationService.getApplicationById(id);
+        if (application == null)
+            throw new ApplicationNotFoundException("Application with id " + id + " not found");
+
+        return ResponseEntity.ok(application);
     }
 
     @PostMapping
@@ -50,8 +55,9 @@ public class AdoptionApplicationController {
         return ResponseEntity.ok(adoptionApplicationService.createApplication(application));
     }
 
+    // TODO: try to fix the problem with the updateApplication method
     @PutMapping("/{id}")
-    public ResponseEntity<AdoptionApplication> updateApplication(@PathVariable Long id, @RequestBody AdoptionApplication application) {
+    public ResponseEntity<AdoptionApplication> updateApplication(@PathVariable Long id, @RequestBody @Valid AdoptionApplication application) {
         AdoptionApplication existingApplication = adoptionApplicationService.getApplicationById(id);
         if (existingApplication == null)
             throw new ApplicationNotFoundException("Application with id " + id + " not found");

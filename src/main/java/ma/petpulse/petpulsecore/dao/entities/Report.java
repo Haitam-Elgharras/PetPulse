@@ -1,5 +1,6 @@
 package ma.petpulse.petpulsecore.dao.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,6 +62,7 @@ public class Report {
     }
 
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Application> applications = new ArrayList<>();
 
     @ManyToOne

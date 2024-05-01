@@ -58,7 +58,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(HttpServletRequest req,AccessDeniedException ex){
         ErrorResponse response = new ErrorResponse(HttpStatus.FORBIDDEN);
-        response.setMessage("Access denied: " + req.getRequestURI());
+        response.setMessage("Access denied: " + ex.getMessage() + " " + req.getRequestURI());
         return buildResponseEntity(response);
     }
 
