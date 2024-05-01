@@ -2,6 +2,7 @@ package ma.petpulse.petpulsecore.advice;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
 import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -99,6 +100,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleIllegalStateException(HttpServletRequest req, IllegalStateException ex){
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST);
         response.setMessage("Illegal state: " + ex.getMessage() + " " + req.getRequestURI());
+        return buildResponseEntity(response);
+    }
+
+    @ExceptionHandler(PetNotFoundException.class)
+    public ResponseEntity<Object> handlePetNotFoundException(HttpServletRequest req, PetNotFoundException ex){
+        ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND);
+        response.setMessage(ex.getMessage() + " " + req.getRequestURI());
         return buildResponseEntity(response);
     }
 

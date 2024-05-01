@@ -3,8 +3,13 @@ package ma.petpulse.petpulsecore.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Listing;
+import ma.petpulse.petpulsecore.dao.entities.Pet;
+import ma.petpulse.petpulsecore.dao.entities.User;
+import ma.petpulse.petpulsecore.exceptions.ListingNotFoundException;
+import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
 import ma.petpulse.petpulsecore.service.services.interfaces.IJwtService;
 import ma.petpulse.petpulsecore.service.services.interfaces.IListingService;
+import ma.petpulse.petpulsecore.service.services.interfaces.IPetService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ListingController {
     private final IListingService listingService;
+    private final IPetService petService;
     private final IJwtService jwtService;
 
     @GetMapping
@@ -29,20 +35,32 @@ public class ListingController {
     }
 
     @PostMapping
-    public ResponseEntity<Listing> createListing(@RequestBody Listing listing) {
-        // TODO: we must get the authenticated user from the jwt token and set it as the owner of the listing
-        //  and also get the pet id as a param or something cause we can't set the owner and the pet in the request body
+    public ResponseEntity<Listing> createListing(@RequestBody Listing listing, @RequestParam Long petId) {
+        User authenticatedUser = jwtService.getAuthenticatedUser();
+        listing.setOwner(authenticatedUser);
+
+        Pet pet = petService.getPetById(petId);
+        if (pet == null)
+            throw new PetNotFoundException("Pet with id " + petId + " not found");
+
+        listing.setPet(pet);
+
         return ResponseEntity.ok(listingService.createListing(listing));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Listing> updateListing(@PathVariable Long id, @RequestBody Listing listing) {
-        // TODO: check if the listing exists to avoid null pointer exception
-        if (!jwtService.getAuthenticatedUser().getId().equals(listing.getOwner().getId())) {
+    public ResponseEntity<Listing> updateListing(@PathVariable Long id, @RequestBody @Valid Listing listing) {
+        Listing existingListing = listingService.getListingById(id);
+        if(existingListing == null)
+            throw new ListingNotFoundException("Listing with id " + id + " not found");
+
+        if (!jwtService.getAuthenticatedUser().getId().equals(existingListing.getOwner().getId()))
             throw new AccessDeniedException("Authenticated user does not have access to update this listing");
-        }
+
         listing.setId(id);
+
         return ResponseEntity.ok(listingService.updateListing(listing));
+
     }
 
     @DeleteMapping("/{id}")

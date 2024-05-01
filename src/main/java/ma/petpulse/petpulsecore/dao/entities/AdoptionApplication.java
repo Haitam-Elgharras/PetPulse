@@ -23,10 +23,10 @@ public class AdoptionApplication {
     private int numberOfPets;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "listing_id", nullable = false)
+    @JoinColumn(name = "listing_id")
     private Listing listing;
 }
