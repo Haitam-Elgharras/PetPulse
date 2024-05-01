@@ -2,14 +2,15 @@ package ma.petpulse.petpulsecore.service.services.interfaces;
 
 import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
+import ma.petpulse.petpulsecore.service.dtos.PetDto;
+import ma.petpulse.petpulsecore.service.dtos.UserDto;
 
 import java.util.List;
 
 public interface IPetService {
-    Pet addPet(Pet pet);
-    Pet updatePet(Pet pet);
+    PetDto savePet(PetDto pet, Long ownerId);
+    PetDto updatePet(PetDto pet);
     void deletePet(Long id);
-    List<Pet> getAllPets();
-    Pet getPetById(Long id);
-    User getOwner(Pet pet);
+    List<PetDto> getAllPets();
+    PetDto getPetById(Long id);
 }
