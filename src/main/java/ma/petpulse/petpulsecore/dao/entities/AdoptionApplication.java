@@ -6,10 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @Table(name = "adoption_applications")
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class AdoptionApplication extends Application {
     @NotBlank(message = "Reason is required")
     private String reason;
