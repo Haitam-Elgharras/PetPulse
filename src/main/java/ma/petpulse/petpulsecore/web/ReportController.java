@@ -1,5 +1,7 @@
 package ma.petpulse.petpulsecore.web;
 
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.Report;
@@ -56,8 +58,8 @@ public class ReportController {
             @RequestParam(value = "type", required = false) Type type,
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "status", required = false) Status status,
-            @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(value = "startDate", required = false) @DateTimeFormat LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) @DateTimeFormat LocalDate endDate,
             @RequestParam(value = "verified", required = false) Boolean verified,
             @RequestParam(value = "petId", required = false) Long petId,
             @RequestParam(value = "userId", required = false) Long userId,
@@ -115,16 +117,16 @@ public class ReportController {
         return new ResponseEntity<>(updatedReportDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/reports/type")
+ /*   @GetMapping("/reports/type")
     public List<ReportDto> getReportsByType(@RequestParam("type") String type) {
         Type enumType = Type.valueOf(type.toUpperCase());
         return reportService.getReportsByType(enumType);
-    }
+    }*/
 
-    @GetMapping("/reports/city")
+   /* @GetMapping("/reports/city")
     public List<ReportDto> getReportsByCity(@RequestParam("city") String city) {
         return reportService.getReportsByCity(city);
-    }
+    }*/
 
 
     //====== Exceptions handling

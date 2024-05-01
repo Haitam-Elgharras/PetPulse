@@ -45,10 +45,10 @@ public class Report {
 
     private String additionalNotes;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date updatedAt;
 
     private boolean verified;
