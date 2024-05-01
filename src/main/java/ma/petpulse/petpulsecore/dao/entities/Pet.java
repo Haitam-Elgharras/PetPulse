@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "pets")
 @Data @AllArgsConstructor @NoArgsConstructor
-
 public class Pet {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -36,11 +35,16 @@ public class Pet {
     @Min(value = 0, message = "Age must be greater than or equal to 0")
     private int age;
 
+    // TODO: make this a list of images
     @NotEmpty
     private String imageURL;
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Listing> listings = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

@@ -3,8 +3,8 @@ package ma.petpulse.petpulsecore.dao.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "applications")
-public class Application {
+@Table(name = "report_applications")
+public class ReportApplication {
     @Id
     private Long id;
 

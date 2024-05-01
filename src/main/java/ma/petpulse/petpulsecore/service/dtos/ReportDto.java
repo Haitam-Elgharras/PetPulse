@@ -1,7 +1,7 @@
 package ma.petpulse.petpulsecore.service.dtos;
 
 import lombok.Data;
-import ma.petpulse.petpulsecore.enumerations.Status;
+import ma.petpulse.petpulsecore.enumerations.ReportStatus;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ public class ReportDto {
     private String city;
     private String address;
     private String type;
-    private Status status;
+    private ReportStatus status;
     private String additionalNotes;
     private Date createdAt;
     private Date updatedAt;

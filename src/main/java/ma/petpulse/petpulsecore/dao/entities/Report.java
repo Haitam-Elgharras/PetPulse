@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.petpulse.petpulsecore.enumerations.Status;
+import ma.petpulse.petpulsecore.enumerations.ReportStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -44,7 +44,7 @@ public class Report {
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Status is required")
-    private Status status;
+    private ReportStatus status;
 
     private String additionalNotes;
 
@@ -62,7 +62,7 @@ public class Report {
     }
 
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
-    private List<Application> applications = new ArrayList<>();
+    private List<ReportApplication> applications = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
