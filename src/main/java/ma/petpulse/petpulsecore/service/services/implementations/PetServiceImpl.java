@@ -2,7 +2,9 @@ package ma.petpulse.petpulsecore.service.services.implementations;
 
 import lombok.AllArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Pet;
+import ma.petpulse.petpulsecore.dao.entities.PetImage;
 import ma.petpulse.petpulsecore.dao.entities.User;
+import ma.petpulse.petpulsecore.dao.repositories.PetImageRepository;
 import ma.petpulse.petpulsecore.dao.repositories.PetRepository;
 import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
 import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,7 @@ public class PetServiceImpl implements IPetService {
     private final PetRepository petRepository;
     private PetMapper petMapper;
     private final StorageService storageService;
+    private final PetImageRepository petImageRepository;
 
     @Override
     public PetDto getPetById(Long id) {
@@ -33,14 +37,20 @@ public class PetServiceImpl implements IPetService {
         return petMapper.fromPet(pet);
     }
     @Override
-    public PetDto savePet(PetDto petDto, MultipartFile image) {
+    public PetDto savePet(PetDto petDto, List<MultipartFile> images) {
         Long ownerId = petDto.getOwnerId();
         if (ownerId == null) {
             throw new UserNotFoundException("Owner not found");
         }
         Pet pet = petMapper.fromPetDto(petDto);
-        pet.setImageURL(storageService.uploadFile(image));
         Pet savedPet = petRepository.save(pet);
+        for (MultipartFile img : images) {
+            String imgPath = storageService.uploadFile(img);
+            PetImage petImage = new PetImage();
+            petImage.setPet(savedPet);
+            petImage.setUrl(imgPath);
+            petImageRepository.save(petImage);
+        }
         return petMapper.fromPet(savedPet);
     }
 

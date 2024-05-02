@@ -43,7 +43,7 @@ public class PetController {
             @RequestParam("breed") String breed,
             @RequestParam("age") int age,
             @RequestParam("ownerId") Long ownerId,
-            @RequestParam("image") MultipartFile image) {
+            @RequestParam("image") List<MultipartFile> images) {
         PetDto petDto = new PetDto();
         petDto.setName(name);
         petDto.setSpecie(specie);
@@ -51,7 +51,7 @@ public class PetController {
         petDto.setAge(age);
         petDto.setOwnerId(ownerId);
         // Save the pet entity
-        return petService.savePet(petDto, image);
+        return petService.savePet(petDto, images);
     }
 
     @PutMapping("/pets/update/{id}")

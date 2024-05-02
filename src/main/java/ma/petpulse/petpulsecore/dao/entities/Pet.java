@@ -35,8 +35,8 @@ public class Pet {
     @Min(value = 0, message = "Age must be greater than or equal to 0")
     private int age;
 
-    @NotEmpty
-    private String imageURL;
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
+    private List<PetImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

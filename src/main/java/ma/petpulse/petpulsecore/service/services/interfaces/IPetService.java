@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface IPetService {
-    PetDto savePet(PetDto pet, MultipartFile image);
+    PetDto savePet(PetDto pet, List<MultipartFile> images);
     PetDto updatePet(PetDto pet);
     void deletePet(Long id);
     List<PetDto> getAllPets();

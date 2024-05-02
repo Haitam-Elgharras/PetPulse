@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Data
 public class PetDto {
@@ -12,6 +13,6 @@ public class PetDto {
     private String specie;
     private String breed;
     private int age;
-    private String imageURL;
+    private List<String> images;
     private Long ownerId;
 }
