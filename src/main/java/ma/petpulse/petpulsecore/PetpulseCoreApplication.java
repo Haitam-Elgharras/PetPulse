@@ -25,7 +25,7 @@ public class PetpulseCoreApplication {
     /*public CommandLineRunner start(UserRepository userRepository, PetRepository petRepository, ReportRepository reportRepository, AdoptionApplicationRepository adoptionApplicationRepository, PasswordEncoder passwordEncoder) {
         return (args) -> {
             // Create some User entities
-            User user1 = new User();
+          /*  User user1 = new User();
             user1.setFirstName("user1");
             user1.setLastName("user1");
             user1.setPassword(passwordEncoder.encode("password1"));
@@ -110,7 +110,7 @@ public class PetpulseCoreApplication {
         };*/
 
 
-        @Bean
+        /*@Bean
         public CommandLineRunner start(UserRepository userRepository,
                                        PetRepository petRepository,
                                        PasswordEncoder passwordEncoder,
@@ -142,6 +142,8 @@ public class PetpulseCoreApplication {
                 petImage2.setUrl("dog_image_url2");
                 petImage2.setPet(pet);
                 petImageRepository.save(petImage2);
-            };
+            };*/
+            //adoptionApplicationRepository.save(application2);*/
+        };
     }
 }

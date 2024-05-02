@@ -10,5 +10,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class LostApplication extends Application {
-    // LostApplication fields
+
+    String sightingLocation;
+    String contactInfo;
+    String message;
+    String proofImage;
 }
