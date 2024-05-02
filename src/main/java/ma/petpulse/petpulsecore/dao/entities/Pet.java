@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Table(name = "pets")
 @Data @AllArgsConstructor @NoArgsConstructor
-
 public class Pet {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

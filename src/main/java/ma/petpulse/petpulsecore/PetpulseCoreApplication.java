@@ -9,6 +9,7 @@ import ma.petpulse.petpulsecore.dao.repositories.PetRepository;
 import ma.petpulse.petpulsecore.dao.repositories.ReportRepository;
 import ma.petpulse.petpulsecore.dao.repositories.UserRepository;
 import ma.petpulse.petpulsecore.enumerations.Role;
+import ma.petpulse.petpulsecore.enumerations.Specie;
 import org.springframework.boot.CommandLineRunner;
 import ma.petpulse.petpulsecore.config.JwtConfig;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +31,7 @@ public class PetpulseCoreApplication {
     public CommandLineRunner start(UserRepository userRepository, PetRepository petRepository, ReportRepository reportRepository, AdoptionApplicationRepository adoptionApplicationRepository, PasswordEncoder passwordEncoder) {
         return (args) -> {
             // Create some User entities
-            User user1 = new User();
+            /*User user1 = new User();
             user1.setFirstName("user1");
             user1.setLastName("user1");
             user1.setPassword(passwordEncoder.encode("password1"));
@@ -95,7 +96,24 @@ public class PetpulseCoreApplication {
             application2.setReport(report2);
 
             adoptionApplicationRepository.save(application1);
-            adoptionApplicationRepository.save(application2);
+            adoptionApplicationRepository.save(application2);*/
+
+            User user1 = new User();
+            user1.setFirstName("user1");
+            user1.setLastName("user1");
+            user1.setPassword(passwordEncoder.encode("password1"));
+            user1.setEmail("user1@example.com");
+            user1.setRole(Role.ROLE_PET_OWNER);
+            userRepository.save(user1);
+
+            Pet pet = new Pet();
+            pet.setName("Dog");
+            pet.setAge(5);
+            pet.setSpecie(Specie.DOG);
+            pet.setOwner(userRepository.findById(1L).get());
+            pet.setImageURL("dog_image_url"); // Set imageURL
+            pet.setBreed("Bulldog"); // Set breed
+            petRepository.save(pet);
         };
     }
 }

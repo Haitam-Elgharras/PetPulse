@@ -4,11 +4,12 @@ import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.service.dtos.PetDto;
 import ma.petpulse.petpulsecore.service.dtos.UserDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface IPetService {
-    PetDto savePet(PetDto pet, Long ownerId);
+    PetDto savePet(PetDto pet, MultipartFile image);
     PetDto updatePet(PetDto pet);
     void deletePet(Long id);
     List<PetDto> getAllPets();

@@ -1,6 +1,7 @@
 package ma.petpulse.petpulsecore.service.dtos;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 
@@ -12,4 +13,5 @@ public class PetDto {
     private String breed;
     private int age;
     private String imageURL;
+    private Long ownerId;
 }
