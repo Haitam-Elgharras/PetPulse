@@ -9,9 +9,11 @@ import ma.petpulse.petpulsecore.service.mappers.UserMapper;
 import ma.petpulse.petpulsecore.service.services.interfaces.IPetService;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -32,10 +34,24 @@ public class PetController {
         return petService.getPetById(id);
     }
 
-    @PostMapping("/pets/save/{ownerId}")
-    public PetDto addPet(@RequestBody PetDto petDto, @PathVariable Long ownerId) {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE},
+            value = "/pets/save")
+    public PetDto addPet(
+            @RequestParam("name") String name,
+            @RequestParam("specie") String specie,
+            @RequestParam("breed") String breed,
+            @RequestParam("age") int age,
+            @RequestParam("ownerId") Long ownerId,
+            @RequestParam("image") List<MultipartFile> images) {
+        PetDto petDto = new PetDto();
+        petDto.setName(name);
+        petDto.setSpecie(specie);
+        petDto.setBreed(breed);
+        petDto.setAge(age);
+        petDto.setOwnerId(ownerId);
         // Save the pet entity
-        return petService.savePet(petDto, ownerId);
+        return petService.savePet(petDto, images);
     }
 
     @PutMapping("/pets/update/{id}")

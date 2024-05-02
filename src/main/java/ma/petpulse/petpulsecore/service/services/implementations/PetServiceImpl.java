@@ -2,9 +2,12 @@ package ma.petpulse.petpulsecore.service.services.implementations;
 
 import lombok.AllArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Pet;
+import ma.petpulse.petpulsecore.dao.entities.PetImage;
 import ma.petpulse.petpulsecore.dao.entities.User;
+import ma.petpulse.petpulsecore.dao.repositories.PetImageRepository;
 import ma.petpulse.petpulsecore.dao.repositories.PetRepository;
 import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
+import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
 import ma.petpulse.petpulsecore.service.dtos.PetDto;
 import ma.petpulse.petpulsecore.service.mappers.PetMapper;
 import ma.petpulse.petpulsecore.service.services.interfaces.IPetService;
@@ -13,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +26,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PetServiceImpl implements IPetService {
     private final PetRepository petRepository;
-    private final IUserService userService;
     private PetMapper petMapper;
+    private final StorageService storageService;
+    private final PetImageRepository petImageRepository;
 
     @Override
     public PetDto getPetById(Long id) {
@@ -31,13 +37,20 @@ public class PetServiceImpl implements IPetService {
         return petMapper.fromPet(pet);
     }
     @Override
-    public PetDto savePet(PetDto petDto, Long ownerId) {
-        User owner = userService.getUserById(ownerId);
-        if (owner == null) {
-            throw new UsernameNotFoundException("User Not Found");
+    public PetDto savePet(PetDto petDto, List<MultipartFile> images) {
+        Long ownerId = petDto.getOwnerId();
+        if (ownerId == null) {
+            throw new UserNotFoundException("Owner not found");
         }
         Pet pet = petMapper.fromPetDto(petDto);
         Pet savedPet = petRepository.save(pet);
+        for (MultipartFile img : images) {
+            String imgPath = storageService.uploadFile(img);
+            PetImage petImage = new PetImage();
+            petImage.setPet(savedPet);
+            petImage.setUrl(imgPath);
+            petImageRepository.save(petImage);
+        }
         return petMapper.fromPet(savedPet);
     }
 

@@ -24,8 +24,8 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    //@Bean
+    /*public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeRequests(authorizeRequests -> {
@@ -49,9 +49,9 @@ public class SecurityConfig {
 
 
         return http.build();
-    }
+    }*/
 
-    /*@Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorizeRequests ->
@@ -60,7 +60,7 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable()); // Disable CSRF protection
         return http.build();
-    }*/
+    }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
