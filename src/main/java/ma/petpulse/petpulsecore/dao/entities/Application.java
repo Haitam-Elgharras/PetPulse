@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "applications")
 @Data
-public class Application {
+public abstract class Application {
+    // it's not possible to use Identity strategy with InheritanceType.TABLE_PER_CLASS
+    // because of <union-subclass> mapping in hibernate
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne

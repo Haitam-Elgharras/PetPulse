@@ -3,7 +3,6 @@ package ma.petpulse.petpulsecore;
 import ma.petpulse.petpulsecore.dao.entities.*;
 import ma.petpulse.petpulsecore.dao.repositories.*;
 import ma.petpulse.petpulsecore.enumerations.Role;
-import ma.petpulse.petpulsecore.enumerations.Specie;
 import org.springframework.boot.CommandLineRunner;
 import ma.petpulse.petpulsecore.config.JwtConfig;
 import org.springframework.boot.SpringApplication;
@@ -21,11 +20,15 @@ public class PetpulseCoreApplication {
         SpringApplication.run(PetpulseCoreApplication.class, args);
     }
 
-    //@Bean
-    /*public CommandLineRunner start(UserRepository userRepository, PetRepository petRepository, ReportRepository reportRepository, AdoptionApplicationRepository adoptionApplicationRepository, PasswordEncoder passwordEncoder) {
+    @Bean
+    public CommandLineRunner start(UserRepository userRepository, PetRepository petRepository,
+                                   ReportRepository reportRepository, AdoptionApplicationRepository adoptionApplicationRepository,
+                                   PasswordEncoder passwordEncoder,
+                                   LostApplicationRepository lostApplicationRepository
+    ) {
         return (args) -> {
             // Create some User entities
-          /*  User user1 = new User();
+            User user1 = new User();
             user1.setFirstName("user1");
             user1.setLastName("user1");
             user1.setPassword(passwordEncoder.encode("password1"));
@@ -47,14 +50,14 @@ public class PetpulseCoreApplication {
             pet1.setName("Dog");
             pet1.setAge(5);
             pet1.setOwner(user1);
-            pet1.setImageURL("dog_image_url"); // Set imageURL
+//            pet1.setImageURL("dog_image_url"); // Set imageURL
             pet1.setBreed("Bulldog"); // Set breed
 
             Pet pet2 = new Pet();
             pet2.setName("Cat");
             pet2.setAge(3);
             pet2.setOwner(user2);
-            pet2.setImageURL("cat_image_url"); // Set imageURL
+//            pet2.setImageURL("cat_image_url"); // Set imageURL
             pet2.setBreed("Persian"); // Set breed
 
             petRepository.save(pet1);
@@ -82,32 +85,30 @@ public class PetpulseCoreApplication {
             application1.setNumberOfPets(0);
             application1.setUser(user1);
             application1.setReport(report1);
+            application1.setPetExperience("I have a dog");
 
             AdoptionApplication application2 = new AdoptionApplication();
             application2.setReason("I love cats");
             application2.setNumberOfPets(1);
             application2.setUser(user2);
             application2.setReport(report2);
-
+            application2.setPetExperience("I have a cat");
             adoptionApplicationRepository.save(application1);
             adoptionApplicationRepository.save(application2);
 
-            User user1 = new User();
-            user1.setFirstName("user1");
-            user1.setLastName("user1");
-            user1.setPassword(passwordEncoder.encode("password1"));
-            user1.setEmail("user1@example.com");
-            user1.setRole(Role.ROLE_PET_OWNER);
-            userRepository.save(user1);
 
-            Pet pet = new Pet();
-            pet.setName("Dog");
-            pet.setAge(5);
-            pet.setSpecie(Specie.DOG);
-            pet.setOwner(userRepository.findById(1L).get());
-            pet.setBreed("Bulldog"); // Set breed
-            petRepository.save(pet);
-        };*/
+            // create some lost application entities
+            LostApplication lostApplication1 = new LostApplication();
+            lostApplication1.setContactInfo("contact info 1");
+            lostApplication1.setProofImage("proof image 1");
+            lostApplication1.setReport(report1);
+            lostApplication1.setUser(user1);
+            lostApplication1.setSightingLocation("Rabat");
+            lostApplication1.setMessage("message 1");
+
+
+            lostApplicationRepository.save(lostApplication1);
+        };
 
 
         /*@Bean
@@ -143,7 +144,7 @@ public class PetpulseCoreApplication {
                 petImage2.setPet(pet);
                 petImageRepository.save(petImage2);
             };*/
-            //adoptionApplicationRepository.save(application2);*/
-        };
+        //adoptionApplicationRepository.save(application2);*/
+//        };
     }
 }
