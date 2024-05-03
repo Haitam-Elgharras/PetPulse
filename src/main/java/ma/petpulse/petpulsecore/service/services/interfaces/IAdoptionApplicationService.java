@@ -1,15 +1,15 @@
 package ma.petpulse.petpulsecore.service.services.interfaces;
 
-import ma.petpulse.petpulsecore.dao.entities.AdoptionApplication;
-import ma.petpulse.petpulsecore.dao.entities.User;
+
+import ma.petpulse.petpulsecore.service.dtos.AdoptionApplicationDto;
 
 import java.util.List;
 
 public interface IAdoptionApplicationService {
-    AdoptionApplication createApplication(AdoptionApplication application);
-    AdoptionApplication getApplicationById(Long id);
-    AdoptionApplication updateApplication(AdoptionApplication application);
+    AdoptionApplicationDto createApplication(AdoptionApplicationDto application);
+    AdoptionApplicationDto getApplicationById(Long id);
+    AdoptionApplicationDto updateApplication(AdoptionApplicationDto application);
     void deleteApplication(Long id);
-    List<AdoptionApplication> getAllApplications();
-    List<AdoptionApplication> getApplicationsByApplicant(User applicant);
+    List<AdoptionApplicationDto> getAllApplications();
+    List<AdoptionApplicationDto> getApplicationsByApplicant(Long userId);
 }
