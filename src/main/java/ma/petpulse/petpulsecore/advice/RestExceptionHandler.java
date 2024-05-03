@@ -2,6 +2,9 @@ package ma.petpulse.petpulsecore.advice;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import ma.petpulse.petpulsecore.exceptions.ApplicationNotFoundException;
+import ma.petpulse.petpulsecore.exceptions.ReportNotFoundException;
+import ma.petpulse.petpulsecore.exceptions.RequestBodyNotValid;
 import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -86,7 +89,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     public ResponseEntity<Object> handleMethodArgumentNotValid(HttpServletRequest req,MethodArgumentNotValidException ex){
         ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST);
-        response.setMessage("Validation error: a required field is missing" + req.getRequestURI());
+        response.setMessage("Validation error: " + ex.getMessage() + " " + req.getRequestURI());
         return buildResponseEntity(response);
     }
 
@@ -101,6 +104,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         response.setMessage("Illegal state: " + ex.getMessage() + " " + req.getRequestURI());
         return buildResponseEntity(response);
     }
+
+    @ExceptionHandler(ApplicationNotFoundException.class)
+    public ResponseEntity<Object> handleApplicationNotFoundException(HttpServletRequest req, ApplicationNotFoundException ex){
+        ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND);
+        response.setMessage(ex.getMessage() + " " + req.getRequestURI());
+        return buildResponseEntity(response);
+    }
+
+    @ExceptionHandler(ReportNotFoundException.class)
+    public ResponseEntity<Object> handleReportNotFoundException(HttpServletRequest req, ReportNotFoundException ex){
+        ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND);
+        response.setMessage(ex.getMessage() + " " + req.getRequestURI());
+        return buildResponseEntity(response);
+    }
+
+    @ExceptionHandler(RequestBodyNotValid.class)
+    public ResponseEntity<Object> handleRequestBodyNotValidException(HttpServletRequest req, RequestBodyNotValid ex){
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST);
+        response.setMessage(ex.getMessage() + " " + req.getRequestURI());
+        return buildResponseEntity(response);
+    }
+
+
 
     private ResponseEntity<Object> buildResponseEntity(ErrorResponse errorResponse){
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
