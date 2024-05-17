@@ -22,7 +22,7 @@ public class PetMapper {
     public PetDto fromPet(Pet pet){
         PetDto petDTO = new PetDto();
         BeanUtils.copyProperties(pet,petDTO);
-        petDTO.setOwnerId(pet.getId());
+        petDTO.setOwnerId(pet.getOwner().getId());
         petDTO.setSpecie(pet.getSpecie().name());
         List<String> images = new ArrayList<>();
         petImageRepository.findByPetId(pet.getId()).forEach(

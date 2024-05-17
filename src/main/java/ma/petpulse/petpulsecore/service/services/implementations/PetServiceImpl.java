@@ -6,12 +6,17 @@ import ma.petpulse.petpulsecore.dao.entities.PetImage;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.dao.repositories.PetImageRepository;
 import ma.petpulse.petpulsecore.dao.repositories.PetRepository;
+import ma.petpulse.petpulsecore.enumerations.Specie;
 import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
 import ma.petpulse.petpulsecore.exceptions.UserNotFoundException;
 import ma.petpulse.petpulsecore.service.dtos.PetDto;
 import ma.petpulse.petpulsecore.service.mappers.PetMapper;
 import ma.petpulse.petpulsecore.service.services.interfaces.IPetService;
 import ma.petpulse.petpulsecore.service.services.interfaces.IUserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +41,7 @@ public class PetServiceImpl implements IPetService {
                 .orElseThrow(()->new PetNotFoundException("Pet Not Found"));
         return petMapper.fromPet(pet);
     }
+
     @Override
     public PetDto savePet(PetDto petDto, List<MultipartFile> images) {
         Long ownerId = petDto.getOwnerId();
@@ -71,6 +77,13 @@ public class PetServiceImpl implements IPetService {
     public List<PetDto> getAllPets() {
         List<Pet> pets = petRepository.findAll();
         return pets.stream().map(pet -> petMapper.fromPet(pet)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<PetDto> getPetsByUserId(Long userId, String name, Pageable pageable) {
+        Page<Pet> pets = petRepository.findPetsByOwner_IdAndNameContains(userId, name, pageable);
+        List<PetDto> petList = pets.stream().map(pet -> petMapper.fromPet(pet)).collect(Collectors.toList());
+        return new PageImpl<>(petList, pageable, pets.getTotalElements());
     }
 
 }
