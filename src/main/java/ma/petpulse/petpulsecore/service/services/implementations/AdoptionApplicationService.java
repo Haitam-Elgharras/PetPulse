@@ -2,7 +2,6 @@ package ma.petpulse.petpulsecore.service.services.implementations;
 
 import lombok.RequiredArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.AdoptionApplication;
-import ma.petpulse.petpulsecore.dao.entities.Report;
 import ma.petpulse.petpulsecore.dao.repositories.AdoptionApplicationRepository;
 import ma.petpulse.petpulsecore.dao.repositories.ReportRepository;
 import ma.petpulse.petpulsecore.exceptions.ApplicationNotFoundException;

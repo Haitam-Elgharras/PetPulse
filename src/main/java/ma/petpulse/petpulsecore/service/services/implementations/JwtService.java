@@ -78,7 +78,9 @@ public class JwtService implements IJwtService {
         return generateToken(
                 Map.of("role", user.getRole(),
                         "id", user.getId(),
-                        "email", user.getEmail()),
+                        "email", user.getEmail(),
+                        "fullName", user.getFirstName() + " " + user.getLastName()
+                ),
                 user.getEmail(),
                 jwtConfig.getSignInKey(),
                 jwtConfig.getAccessTokenExpiredAfter()
