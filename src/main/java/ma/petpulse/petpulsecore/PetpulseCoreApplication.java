@@ -3,6 +3,8 @@ package ma.petpulse.petpulsecore;
 import ma.petpulse.petpulsecore.dao.entities.*;
 import ma.petpulse.petpulsecore.dao.repositories.*;
 import ma.petpulse.petpulsecore.enumerations.Role;
+import ma.petpulse.petpulsecore.enumerations.Specie;
+import ma.petpulse.petpulsecore.enumerations.Type;
 import org.springframework.boot.CommandLineRunner;
 import ma.petpulse.petpulsecore.config.JwtConfig;
 import org.springframework.boot.SpringApplication;
@@ -52,6 +54,7 @@ public class PetpulseCoreApplication {
             pet1.setOwner(user1);
 //            pet1.setImageURL("dog_image_url"); // Set imageURL
             pet1.setBreed("Bulldog"); // Set breed
+            pet1.setSpecie(Specie.DOG);
 
             Pet pet2 = new Pet();
             pet2.setName("Cat");
@@ -59,25 +62,80 @@ public class PetpulseCoreApplication {
             pet2.setOwner(user2);
 //            pet2.setImageURL("cat_image_url"); // Set imageURL
             pet2.setBreed("Persian"); // Set breed
+            pet2.setSpecie(Specie.CAT);
+
+            Pet pet3 = new Pet();
+            pet3.setName("bobi");
+            pet3.setAge(5);
+            pet3.setOwner(user1);
+//            pet1.setImageURL("dog_image_url"); // Set imageURL
+            pet3.setBreed("Bulldog"); // Set breed
+            pet3.setSpecie(Specie.DOG);
+
+            Pet pet4 = new Pet();
+            pet4.setName("kitty");
+            pet4.setAge(3);
+            pet4.setOwner(user2);
+//            pet2.setImageURL("cat_image_url"); // Set imageURL
+            pet4.setBreed("Persian"); // Set breed
+            pet4.setSpecie(Specie.CAT);
+
+
+
 
             petRepository.save(pet1);
             petRepository.save(pet2);
+            petRepository.save(pet3);
+            petRepository.save(pet4);
+
 
             // Create some Report entities
             Report report1 = new Report();
-            report1.setTitle("Lost dog");
-            report1.setDescription("Lost in the park");
-            report1.setUser(user1);
-            report1.setPet(pet1);
+            report1.setTitle("Persian cat for adoption");
+            report1.setDescription("very cute cat");
+            report1.setType(Type.ADOPTION);
+            report1.setUser(user2);
+            report1.setPet(pet2);
 
             Report report2 = new Report();
-            report2.setTitle("Found cat");
-            report2.setDescription("Found near the supermarket");
-            report2.setUser(user2);
-            report2.setPet(pet2);
+            report2.setTitle("bidpuppy for adoption");
+            report2.setDescription("very cute puppy");
+            report2.setType(Type.ADOPTION);
+            report2.setUser(user1);
+            report2.setPet(pet1);
+
+            Report report3 = new Report();
+            report3.setTitle("Persian cat for adoption");
+            report3.setDescription("very cute cat");
+            report3.setType(Type.ADOPTION);
+            report3.setUser(user2);
+            report3.setPet(pet4);
+
+            Report report4 = new Report();
+            report4.setTitle("bidpuppy for adoption");
+            report4.setDescription("very cute puppy");
+            report4.setType(Type.ADOPTION);
+            report4.setUser(user2);
+            report4.setPet(pet3);
+
+            Report report5 = new Report();
+            report5.setTitle("bidpuppy for adoption");
+            report5.setDescription("very cute puppy");
+            report5.setType(Type.ADOPTION);
+            report5.setUser(user2);
+            report5.setPet(pet3);
+
+
+
+
+
 
             reportRepository.save(report1);
             reportRepository.save(report2);
+            reportRepository.save(report3);
+            reportRepository.save(report4);
+            reportRepository.save(report5);
+
 
             // Create some AdoptionApplication entities
             AdoptionApplication application1 = new AdoptionApplication();

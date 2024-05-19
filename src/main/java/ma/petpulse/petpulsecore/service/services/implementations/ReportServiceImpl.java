@@ -6,6 +6,7 @@ import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.Report;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.dao.repositories.ReportRepository;
+import ma.petpulse.petpulsecore.enumerations.Specie;
 import ma.petpulse.petpulsecore.enumerations.Status;
 import ma.petpulse.petpulsecore.enumerations.Type;
 import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
@@ -143,5 +144,10 @@ public class ReportServiceImpl implements IReportService {
                 }
         );
         return new PageImpl<>(reportDtos, pageable, reports.getTotalElements());
+    }
+
+    @Override
+    public Page<Report> getAdoptReportsByFilters(String city, Type type, String petBreed, int petAgeStart, int petAgeEnd, Specie petSpecie, Pageable pageable) {
+        return reportRepository.getReportsByCityOrPetBreedOrPetAgeBetweenAndTypeAndPetSpecie(city,petBreed, petAgeStart, petAgeEnd, type, petSpecie, pageable);
     }
 }

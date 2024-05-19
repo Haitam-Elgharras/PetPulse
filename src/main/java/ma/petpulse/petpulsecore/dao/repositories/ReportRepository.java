@@ -1,7 +1,10 @@
 package ma.petpulse.petpulsecore.dao.repositories;
 
-import ma.petpulse.petpulsecore.dao.entities.Pet;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import ma.petpulse.petpulsecore.dao.entities.Report;
+import ma.petpulse.petpulsecore.enumerations.Specie;
 import ma.petpulse.petpulsecore.enumerations.Status;
 import ma.petpulse.petpulsecore.enumerations.Type;
 import org.springframework.data.domain.Page;
@@ -33,4 +36,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
             "AND (:petId IS NULL OR r.pet.id = :petId) " +
             "AND (:userId IS NULL OR r.user.id = :userId)")
     Page<Report> findReportsByFilters(Type type, String city, Status status, LocalDate startDate, LocalDate endDate, Boolean verified, Long petId, Long userId, Pageable pageable);
+
+    Page<Report> getReportsByCityOrPetBreedOrPetAgeBetweenAndTypeAndPetSpecie(String city, @NotEmpty @Size(max = 100, message = "Breed cannot exceed 100 characters") String pet_breed, @Min(value = 0, message = "Age must be greater than or equal to 0") int pet_age, @Min(value = 0, message = "Age must be greater than or equal to 0") int pet_age2, Type type, Specie pet_specie, Pageable pageable);
 }
