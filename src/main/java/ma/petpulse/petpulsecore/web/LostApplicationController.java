@@ -23,6 +23,7 @@ import java.util.List;
 public class LostApplicationController {
     LostApplicationService lostApplicationService;
 
+
     @GetMapping
     public List<LostApplicationDto> getAllApplications() {
         return lostApplicationService.getAllApplications();

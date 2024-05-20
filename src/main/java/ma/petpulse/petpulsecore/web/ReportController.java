@@ -48,7 +48,6 @@ public class ReportController {
     private ReportServiceImpl reportService;
     private final ReportValidator reportValidator;
 
-
     @GetMapping("/reports")
     public List<ReportDto> getReports() {
         return reportService.getAllReports();

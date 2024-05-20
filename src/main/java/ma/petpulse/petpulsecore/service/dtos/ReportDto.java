@@ -21,8 +21,6 @@ public class ReportDto {
 
     private String title;
     private String description;
-
-
     private double latitude;
     private double longitude;
     private String city;
