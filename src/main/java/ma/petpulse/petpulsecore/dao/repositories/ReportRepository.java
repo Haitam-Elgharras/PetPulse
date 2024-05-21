@@ -28,7 +28,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     @Query("SELECT r FROM Report r " +
             "WHERE (:type IS NULL OR r.type = :type) " +
-            "AND (:city IS NULL OR r.city = :city) " +
+            "AND (:city IS NULL OR r.city LIKE %:city%) " +
             "AND (:status IS NULL OR r.status = :status) " +
             "AND (:startDate IS NULL OR r.createdAt >= :startDate) " +
             "AND (:endDate IS NULL OR r.createdAt <= :endDate) " +
