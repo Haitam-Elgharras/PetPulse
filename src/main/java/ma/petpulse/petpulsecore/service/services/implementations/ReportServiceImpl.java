@@ -148,6 +148,8 @@ public class ReportServiceImpl implements IReportService {
 
     @Override
     public Page<Report> getAdoptReportsByFilters(String city, Type type, String petBreed, int petAgeStart, int petAgeEnd, Specie petSpecie, Pageable pageable) {
-        return reportRepository.getReportsByCityOrPetBreedOrPetAgeBetweenAndTypeAndPetSpecie(city,petBreed, petAgeStart, petAgeEnd, type, petSpecie, pageable);
+        ReportSpecification spec = new ReportSpecification(city, petBreed, petAgeStart, petAgeEnd, type, petSpecie);
+
+        return reportRepository.findAll(spec, pageable);
     }
 }
