@@ -119,19 +119,6 @@ public class ReportController {
 
     @GetMapping("/reports/adoptFilter")
     public Page<Report> getAdoptReportsByFilters(@RequestParam(value = "city", required = false) String city,
-                                                  @RequestParam(value = "type", required = false) Type type,
-                                                  @RequestParam(value = "page", defaultValue = "0") int page,
-                                                  @RequestParam(value = "size", defaultValue = "10") int size,
-                                                    @RequestParam(value = "petBreed", required = false) String petBreed,
-                                                    @RequestParam(value = "petAgeStart", required = false) int petAgeStart,
-                                                    @RequestParam(value = "petAgeEnd", required = false) int petAgeEnd,
-                                                    @RequestParam(value = "petSpecie", required = false) Specie petSpecie) {
-        Pageable pageable = PageRequest.of(page, size);
-        return reportService.getAdoptReportsByFilters(city, type, petBreed, petAgeStart, petAgeEnd, petSpecie, pageable);
-    }
-
-    @GetMapping("/reports/adoptFilter2")
-    public Page<Report> getAdoptReportsByFilters2(@RequestParam(value = "city", required = false) String city,
                                                  @RequestParam(value = "type", required = false) Type type,
                                                  @RequestParam(value = "page", defaultValue = "0") int page,
                                                  @RequestParam(value = "size", defaultValue = "10") int size,
