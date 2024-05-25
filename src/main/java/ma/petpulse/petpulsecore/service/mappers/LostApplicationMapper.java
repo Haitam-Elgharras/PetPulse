@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Application;
 import ma.petpulse.petpulsecore.dao.entities.LostApplication;
 import ma.petpulse.petpulsecore.dao.repositories.ReportRepository;
+import ma.petpulse.petpulsecore.dao.repositories.UserRepository;
 import ma.petpulse.petpulsecore.exceptions.ReportNotFoundException;
 import ma.petpulse.petpulsecore.service.dtos.AdoptionApplicationDto;
 import ma.petpulse.petpulsecore.service.dtos.LostApplicationDto;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class LostApplicationMapper {
     private final AdoptionMapper adoptionMapper;
     private final ReportRepository reportRepository;
+    private final UserRepository userRepository;
     private final IJwtService jwtService;
 
     public LostApplication fromLostApplicationDto(LostApplicationDto lostApplicationDto) {
@@ -29,6 +31,7 @@ public class LostApplicationMapper {
                 () -> new ReportNotFoundException("Report with id " + lostApplicationDto.getReportId() + " not found")
         ));
         application.setId(lostApplicationDto.getId());
+        application.setUser(userRepository.findById(lostApplicationDto.getUserId()).orElse(null));
         application.setMessage(lostApplicationDto.getMessage());
         application.setContactInfo(lostApplicationDto.getContactInfo());
         application.setProofImage(lostApplicationDto.getProofImage());

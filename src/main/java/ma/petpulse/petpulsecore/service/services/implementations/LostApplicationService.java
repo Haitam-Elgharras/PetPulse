@@ -64,6 +64,15 @@ public class LostApplicationService implements ILostApplicationService {
         return applicationDtos;
     }
 
+    public List<LostApplicationDto> getApplicationsByReportId(Long reportId) {
+        List<LostApplication> applications = lostApplicationRepository.findByReportId(reportId);
+        List<LostApplicationDto> applicationDtos = new ArrayList<>();
+        for (LostApplication application : applications) {
+            applicationDtos.add(lostApplicationMapper.fromLostApplication(application));
+        }
+        return applicationDtos;
+    }
+
     @Override
     public List<LostApplicationDto> getApplicationsByApplicant(Long userId) {
         return null;

@@ -29,13 +29,18 @@ public class LostApplicationController {
         return lostApplicationService.getAllApplications();
     }
 
+    @GetMapping("/{id}")
+    public List<LostApplicationDto> getApplicationsByReportId(@PathVariable Long id) {
+        return lostApplicationService.getApplicationsByReportId(id);
+    }
+
     @PostMapping
     public LostApplicationDto createApplication(@Valid LostApplicationDto application,
                                                 @RequestPart("image") MultipartFile image) throws IOException {
         return lostApplicationService.createApplication(application, image);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("application/{id}")
     public ResponseEntity<?> getApplicationById(@PathVariable Long id) {
         LostApplicationDto applicationDto = lostApplicationService.getApplicationById(id);
         return ResponseEntity.ok(applicationDto);
