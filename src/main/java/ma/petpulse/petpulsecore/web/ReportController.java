@@ -125,20 +125,10 @@ public class ReportController {
                                                  @RequestParam(value = "petAgeStart", required = false) int petAgeStart,
                                                  @RequestParam(value = "petAgeEnd", required = false) int petAgeEnd,
                                                  @RequestParam(value = "petSpecie", required = false) Specie petSpecie) {
+
         Pageable pageable = PageRequest.of(page, size);
         return reportService.getAdoptReportsByFilters(city, type, petBreed, petAgeStart, petAgeEnd, petSpecie, pageable);
     }
-
- /*   @GetMapping("/reports/type")
-    public List<ReportDto> getReportsByType(@RequestParam("type") String type) {
-        Type enumType = Type.valueOf(type.toUpperCase());
-        return reportService.getReportsByType(enumType);
-    }*/
-
-   /* @GetMapping("/reports/city")
-    public List<ReportDto> getReportsByCity(@RequestParam("city") String city) {
-        return reportService.getReportsByCity(city);
-    }*/
 
 
     //====== Exceptions handling
