@@ -110,7 +110,7 @@ public class PetpulseCoreApplication {
         };*/
 
 
-        /*@Bean
+        @Bean
         public CommandLineRunner start(UserRepository userRepository,
                                        PetRepository petRepository,
                                        PasswordEncoder passwordEncoder,
@@ -125,25 +125,37 @@ public class PetpulseCoreApplication {
                 user1.setRole(Role.ROLE_PET_OWNER);
                 userRepository.save(user1);
 
-                Pet pet = new Pet();
-                pet.setName("Dog");
-                pet.setAge(5);
-                pet.setSpecie(Specie.DOG);
-                pet.setOwner(user1);
-                pet.setBreed("Bulldog"); // Set breed
-                petRepository.save(pet);
+                User user2 = new User();
+                user2.setFirstName("user2");
+                user2.setLastName("user2");
+                user2.setPassword(passwordEncoder.encode("password2"));
+                user2.setEmail("user2@example.com");
+                user2.setRole(Role.ROLE_PET_OWNER);
+                userRepository.save(user2);
 
-                PetImage petImage1 = new PetImage();
-                petImage1.setUrl("dog_image_url1");
-                petImage1.setPet(pet);
-                petImageRepository.save(petImage1);
 
-                PetImage petImage2 = new PetImage();
-                petImage2.setUrl("dog_image_url2");
-                petImage2.setPet(pet);
-                petImageRepository.save(petImage2);
-            };*/
+                /*for (int i=0;i<5;i++){
+                    Pet pet = new Pet();
+                    pet.setName("Dog" + i);
+                    pet.setAge(5);
+                    pet.setSpecie(Specie.DOG);
+                    pet.setOwner(user1);
+                    pet.setBreed("Bulldog"); // Set breed
+                    petRepository.save(pet);
+
+                    PetImage petImage1 = new PetImage();
+                    petImage1.setUrl("dog_image_url1");
+                    petImage1.setPet(pet);
+                    petImageRepository.save(petImage1);
+
+                    PetImage petImage2 = new PetImage();
+                    petImage2.setUrl("dog_image_url2");
+                    petImage2.setPet(pet);
+                    petImageRepository.save(petImage2);
+                }*/
+
+
+            };
             //adoptionApplicationRepository.save(application2);*/
         };
-    }
 }

@@ -23,9 +23,8 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-
-    //@Bean
-    /*public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeRequests(authorizeRequests -> {
@@ -48,17 +47,6 @@ public class SecurityConfig {
                 );
 
 
-        return http.build();
-    }*/
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests(authorizeRequests ->
-                        authorizeRequests
-                                .anyRequest().permitAll() // Allow access to all endpoints without authentication
-                )
-                .csrf(csrf -> csrf.disable()); // Disable CSRF protection
         return http.build();
     }
     @Bean
