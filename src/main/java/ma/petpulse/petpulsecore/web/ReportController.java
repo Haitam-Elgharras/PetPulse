@@ -5,6 +5,7 @@ import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.Report;
+import ma.petpulse.petpulsecore.dao.repositories.ReportRepository;
 import ma.petpulse.petpulsecore.enumerations.Specie;
 import ma.petpulse.petpulsecore.enumerations.Status;
 import ma.petpulse.petpulsecore.enumerations.Type;
@@ -36,17 +37,16 @@ import javax.validation.Validator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
 
 public class ReportController {
     private ReportServiceImpl reportService;
+    private ReportRepository reportRepository;
     private final ReportValidator reportValidator;
+    public ReportMapper reportMapper;
 
     @GetMapping("/reports")
     public List<ReportDto> getReports() {
@@ -75,6 +75,16 @@ public class ReportController {
     @GetMapping("/reports/{id}")
     public ReportDto getReportById(@PathVariable Long id) {
         return reportService.getReportById(id);
+    }
+
+    @GetMapping("/reports/image/{image}")
+    public ReportDto getReportByImage(@PathVariable String image) {
+        Page<Report> reportPage = reportRepository.findReportsByPetImageURLContaining(image, PageRequest.of(0, 1));
+        if (reportPage.hasContent()) {
+            return reportMapper.fromReport(reportPage.getContent().get(0));
+        } else {
+            return null;
+        }
     }
 
     @DeleteMapping("/reports/{id}")

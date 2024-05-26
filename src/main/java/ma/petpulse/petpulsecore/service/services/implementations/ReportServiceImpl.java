@@ -36,11 +36,11 @@ public class ReportServiceImpl implements IReportService {
     public PetServiceImpl petService;
     public ReportMapper reportMapper;
     private PetMapper petMapper;
-  
+
     @Override
     public ReportDto saveReport(ReportDto reportDto) throws UserNotFoundException, PetNotFoundException {
         log.info("saving new report");
-        Pet pet= petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
+        Pet pet = petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
         User user = userService.getUserById(reportDto.getUser_id());
         if (user == null)
             throw new UserNotFoundException("User with id " + reportDto.getUser_id() + " not found");
@@ -53,7 +53,7 @@ public class ReportServiceImpl implements IReportService {
 
     @Override
     public ReportDto updateReport(ReportDto reportDto) {
-        Pet pet=petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
+        Pet pet = petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
         User user = userService.getUserById(reportDto.getUser_id());
         if (user == null)
             throw new UserNotFoundException("User with id " + reportDto.getUser_id() + " not found");
@@ -152,4 +152,6 @@ public class ReportServiceImpl implements IReportService {
 
         return reportRepository.findAll(spec, pageable);
     }
+
+
 }

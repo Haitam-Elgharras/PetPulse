@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
@@ -44,5 +45,11 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     Page<Report> findAll(Specification<Report> spec, Pageable pageable);
 
+
+    @Query("SELECT DISTINCT r FROM Report r " +
+            "JOIN FETCH r.pet p " +
+            "JOIN FETCH p.images i " +
+            "WHERE i.url = :imageUrl")
+    Page<Report> findReportsByPetImageURLContaining(String imageUrl, Pageable pageable);
 
 }
