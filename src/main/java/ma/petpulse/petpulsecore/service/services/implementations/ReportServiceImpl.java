@@ -6,6 +6,7 @@ import ma.petpulse.petpulsecore.dao.entities.Pet;
 import ma.petpulse.petpulsecore.dao.entities.Report;
 import ma.petpulse.petpulsecore.dao.entities.User;
 import ma.petpulse.petpulsecore.dao.repositories.ReportRepository;
+import ma.petpulse.petpulsecore.enumerations.Specie;
 import ma.petpulse.petpulsecore.enumerations.Status;
 import ma.petpulse.petpulsecore.enumerations.Type;
 import ma.petpulse.petpulsecore.exceptions.PetNotFoundException;
@@ -35,11 +36,11 @@ public class ReportServiceImpl implements IReportService {
     public PetServiceImpl petService;
     public ReportMapper reportMapper;
     private PetMapper petMapper;
-  
+
     @Override
     public ReportDto saveReport(ReportDto reportDto) throws UserNotFoundException, PetNotFoundException {
         log.info("saving new report");
-        Pet pet= petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
+        Pet pet = petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
         User user = userService.getUserById(reportDto.getUser_id());
         if (user == null)
             throw new UserNotFoundException("User with id " + reportDto.getUser_id() + " not found");
@@ -52,7 +53,7 @@ public class ReportServiceImpl implements IReportService {
 
     @Override
     public ReportDto updateReport(ReportDto reportDto) {
-        Pet pet=petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
+        Pet pet = petMapper.fromPetDto(petService.getPetById(reportDto.getPet_id()));
         User user = userService.getUserById(reportDto.getUser_id());
         if (user == null)
             throw new UserNotFoundException("User with id " + reportDto.getUser_id() + " not found");
@@ -144,4 +145,13 @@ public class ReportServiceImpl implements IReportService {
         );
         return new PageImpl<>(reportDtos, pageable, reports.getTotalElements());
     }
+
+    @Override
+    public Page<Report> getAdoptReportsByFilters(String city, Type type, String petBreed, int petAgeStart, int petAgeEnd, Specie petSpecie, Pageable pageable) {
+        ReportSpecification spec = new ReportSpecification(city, petBreed, petAgeStart, petAgeEnd, type, petSpecie);
+
+        return reportRepository.findAll(spec, pageable);
+    }
+
+
 }

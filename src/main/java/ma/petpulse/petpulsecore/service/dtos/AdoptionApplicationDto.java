@@ -1,17 +1,21 @@
-package ma.petpulse.petpulsecore.dao.entities;
+package ma.petpulse.petpulsecore.service.dtos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@Entity
-@Table(name = "adoption_applications")
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class AdoptionApplication extends Application {
+public class AdoptionApplicationDto {
+
+    private Long id;
+
+    // for the user id it will be the authenticated user
+    private Long userId;
+
+    @NotNull(message = "Report id is required")
+    private Long reportId;
+
     @NotBlank(message = "Reason is required")
     private String reason;
 

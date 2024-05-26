@@ -1,6 +1,7 @@
 package ma.petpulse.petpulsecore.service.services.interfaces;
 
 import ma.petpulse.petpulsecore.dao.entities.Report;
+import ma.petpulse.petpulsecore.enumerations.Specie;
 import ma.petpulse.petpulsecore.enumerations.Status;
 import ma.petpulse.petpulsecore.enumerations.Type;
 import ma.petpulse.petpulsecore.service.dtos.ReportDto;
@@ -29,4 +30,6 @@ public interface IReportService {
     List<ReportDto> getReportsByCity(String city);
 
     Page<ReportDto> getReportsByFilters(Type type, String city, Status status, LocalDate startDate, LocalDate endDate, Boolean verified, Long petId, Long userId, Pageable pageable);
+
+    Page<Report> getAdoptReportsByFilters(String city, Type type, String petBreed, int petAgeStart, int petAgeEnd, Specie petSpecie, Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package ma.petpulse.petpulsecore.dao.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,5 +13,6 @@ public class PetImage {
     private Long id;
     private String url;
     @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Pet pet;
 }

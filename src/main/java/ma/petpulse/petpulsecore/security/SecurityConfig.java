@@ -23,10 +23,12 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-    @Bean
+
+/*    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Apply the CORS configuration
                 .authorizeRequests(authorizeRequests -> {
                             try {
                                 authorizeRequests
@@ -37,9 +39,9 @@ public class SecurityConfig {
                                         .and()
                                         .sessionManagement(sessionManagement -> sessionManagement
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                        .csrf(AbstractHttpConfigurer::disable)
                                         .authenticationProvider(authenticationProvider)
-                                        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                                        .csrf(AbstractHttpConfigurer::disable);
+                                        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
@@ -48,7 +50,18 @@ public class SecurityConfig {
 
 
         return http.build();
+    }*/
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .anyRequest().permitAll() // Allow access to all endpoints without authentication
+                ).csrf(csrf -> csrf.disable()); // Disable CSRF protection
+        return http.build();
     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
